@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.mycompany.hw_5.databinding.ContactsEditFragmentBinding
 
 
 class ContactEditFragment : Fragment() {
     private lateinit var binding: ContactsEditFragmentBinding
+
+    private var sharedContact: ContactItem? = null
 
 
     companion object {
@@ -34,11 +37,17 @@ class ContactEditFragment : Fragment() {
 
     private fun setupEditTexts() {
         arguments?.let { args ->
-            val sharedContact = args.getParcelable<ContactItem>(ContactsFragment.SHARED_CONTACT)
-            sharedContact?.let {
-                binding.contactEditName.setText(sharedContact.name)
-                binding.contactEditSurname.setText(sharedContact.surname)
-                binding.contactEditPhoneNumber.setText(sharedContact.phoneNumber)
+            sharedContact = args.getParcelable(ContactsFragment.SHARED_CONTACT)
+            sharedContact?.let { contact ->
+                binding.contactEditName.setText(contact.name)
+                binding.contactEditSurname.setText(contact.surname)
+                binding.contactEditPhoneNumber.setText(contact.phoneNumber)
+                Glide
+                    .with(this)
+                    .load(contact.image)
+                    .placeholder(R.drawable.ic_downloading)
+                    .error(R.drawable.ic_error_image)
+                    .into(binding.contactImage)
             }
         }
     }
@@ -66,10 +75,11 @@ class ContactEditFragment : Fragment() {
     }
 
     private fun putArgsForResult(typedName: String, typedSurname: String, typedPhoneNumber: String) {
+        val sameImage = sharedContact?.image?: ""
         val args = Bundle().apply {
             putParcelable(
                     ContactsFragment.SHARED_CONTACT,
-                    ContactItem(typedName, typedSurname, typedPhoneNumber)
+                    ContactItem(typedName, typedSurname, typedPhoneNumber, sameImage)
             )
             putInt(
                     ContactsFragment.CONTACT_POSITION,

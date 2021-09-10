@@ -4,4 +4,5 @@
     <string name="contact_edit_surname">Type surname</string>
     <string name="contact_edit_name">Type name</string>
     <string name="contacts_edit_save_button">save</string>
+    <string name="contact_image_view">contact image view</string>
 </resources>

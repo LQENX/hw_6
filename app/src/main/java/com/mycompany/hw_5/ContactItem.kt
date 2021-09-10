@@ -6,18 +6,22 @@ import android.os.Parcelable
 data class ContactItem(
     var name: String,
     var surname: String,
-    var phoneNumber: String
+    var phoneNumber: String,
+    var image: String
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString()?: "",
             parcel.readString()?: "",
-            parcel.readString()?: "")
+            parcel.readString()?: "",
+            parcel.readString()?: ""
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(surname)
         parcel.writeString(phoneNumber)
+        parcel.writeString(image)
     }
 
     override fun describeContents(): Int {
